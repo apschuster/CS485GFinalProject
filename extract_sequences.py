@@ -51,7 +51,7 @@ cmd= 'blastn -db UroBrizUbJA92_genome.fasta -query extracted_sequences.fasta -ou
 os.system(cmd)
 
 #Output the relevant results to a file
-cmd= 'awk -F ' ' \'{print $1, $2, $3, $9, $10}\' UbJA92.genome_BLASTn6 > parsed_blast.txt'
+cmd= 'awk -F ' ' \'{print $1, $2, $3, $9, $10}\' UbJA92.genome_BLASTn7 > parsed_blast.txt'
 os.system(cmd)
                 
 
