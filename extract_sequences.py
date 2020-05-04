@@ -58,8 +58,8 @@ with open('extracted_sequences.fasta', 'w') as writer:
         
         contigNameLoc= re.search('Urochloa.+', contig)
         contigName=contigNameLoc.group()
-        contig= contig.replace('\n','') #Need to eliminate new line character since blast does not count it
-        length= len(contig)-len(firstLine.group())
+        contigtemp= contig.replace('\n','') #Need to eliminate new line character since blast does not count it
+        length= len(contigtemp)-len(firstLine.group())
 
         #Want to store the contig name as well as its location in a dictionary for quick look up later on
         contigInfo.add(contigName,length)
