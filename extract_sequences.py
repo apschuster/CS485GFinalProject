@@ -1,5 +1,6 @@
 import re
 import os
+import sys
 
 #Dictionary Class
 class my_dictionary(dict): 
@@ -18,6 +19,7 @@ string_temp= ''
 contigList= []
 
 
+    
 with open('Urochloa-brizantha_UbJA92.fasta', 'rt') as infile: 
     copy = False
     lines= infile.readlines()
@@ -68,34 +70,54 @@ with open('extracted_sequences.fasta', 'w') as writer:
         writer.write(contig[(len(contig)-extractAmount):len(contig)])  #Extracting the last 4th of each contig to then blast against
                                                                        #the genome for testing purposes.
 
-# # Generate the blast results, want output format 6 because it's cleaner
-# print(contigInfo.get('UrochloaJA92_contig226'))
-# cmd= 'blastn -db UroBrizUbJA92_genome.fasta -query extracted_sequences.fasta -out UbJA92.genome_BLASTn6 -outfmt 6'
-# os.system(cmd)
+tel_subTel_sequence= 'extracted_sequences.fasta'
 
-# # Output the relevant results to a file. $1= query contig, $2= subject contig (blast db)
-# # $3= percentage match, $9= start match loc on subject, $10=end match loc on subject
-# cmd= 'awk -F \' \' \'{print $1, $2, $3, $9, $10}\' UbJA92.genome_BLASTn6 > parsed_blast.txt'
-# os.system(cmd)
-count=0
+if(len(sys.argv)==2):
+    tel_subTel_sequence = sys.argv[1]
+
+
+# Generate the blast results, want output format 6 because it's cleaner
+print(contigInfo.get('UrochloaJA92_contig226'))
+cmd= 'blastn -db UroBrizUbJA92_genome.fasta -query '+ tel_subTel_sequence +' -out UbJA92.genome_BLASTn6 -outfmt 6'
+os.system(cmd)
+
+# Output the relevant results to a file. $1= query contig, $2= subject contig (blast db)
+# $3= percentage match, $9= start match loc on subject, $10=end match loc on subject
+cmd= 'awk -F \' \' \'{print $1, $2, $3, $9, $10}\' UbJA92.genome_BLASTn6 > parsed_blast.txt'
+os.system(cmd)
+
+initialMatchCount=0
+telCount=0
+subTelCount=0
+
 with open('parsed_blast.txt', 'rt') as reader:
     linesP= reader.readlines()
 
     for i in range(0, len(linesP)):
         line=linesP[i].rstrip()
         parameterList= line.split(' ')
-        # print(parameterList[3])
-        # print(contigInfo.get(parameterList[1]))
-        # print(parameterList[2])
-        # print(parameterList[4])
-        # print(" ")
 
-        
-        #Matching for subtel contigs, need 100% match and in opposite orientation.
-        if( (parameterList[3]==str(contigInfo.get(parameterList[1])) and parameterList[2]=='100.000') or (parameterList[4]==1 and parameterList[2]=='100.000') ):
-            print(parameterList)
-            count+=1
+        query= parameterList[0]
+        subject= parameterList[1]
+        matchpercent= float(parameterList[2])
+        subjectStart= int(parameterList[3])
+        subjectEnd= int(parameterList[4])
+        subjectContigLength=contigInfo.get(subject)  #retrieve length of subject contig in database, important for knowing if matches appear near ends
+
+        verfiedTelContigs=''
+        verifiedSubTelContigs=''
+
+        initialMatchCount+=1
+        #Matching for subtel contigs, need 100% match and in opposite orientation. Matches need to be within 1500 bases to ends
+        if( (subjectStart > (subjectContigLength-1500) and subjectEnd<subjectStart and matchpercent==100.000) or (subjectStart<1500 and subjectEnd<subjectStart and matchpercent==100.000) ):
             #subtel contig, need 100% match
+            subTelCount+=1
+        elif( (subjectStart > (subjectContigLength-1500) and subjectEnd>subjectStart) or (subjectStart<1500 and subjectEnd>subjectStart) ):
+            telCount+=1
+
+            
 
     
-print(count)
+print("SubTelCount:", subTelCount)
+print("Tel Count: ",telCount)
+print("Initial Match Count: ",initialMatchCount)
