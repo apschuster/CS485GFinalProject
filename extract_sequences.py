@@ -77,7 +77,6 @@ if(len(sys.argv)==2):
 
 
 # Generate the blast results, want output format 6 because it's cleaner
-print(contigInfo.get('UrochloaJA92_contig226'))
 cmd= 'blastn -db UroBrizUbJA92_genome.fasta -query '+ tel_subTel_sequence +' -out UbJA92.genome_BLASTn6 -outfmt 6'
 os.system(cmd)
 
