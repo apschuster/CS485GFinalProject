@@ -24,15 +24,20 @@ def database_Creation(databaseIn,databaseOut):
 
 def main():
     database= 'UroBrizUbJA92_genome.fasta'
+    genome= 'Urochloa-brizantha_UbJA92.fasta'
 
     #If user decides to make new database. argv[2]= .fasta file to turn into databse, argv[3]= name of the database
     if(len(sys.argv)==4):
         database= database_Creation(sys.argv[2],sys.argv[3])
+        genome= sys.argv[2]
+    elif(len(sys.argv)==3):
+        genome= sys.argv[2]
 
     string_temp= ''
     contigList= []
 
-    with open('Urochloa-brizantha_UbJA92.fasta', 'rt') as infile: 
+    #Need to store original genome to count each contig
+    with open(genome, 'rt') as infile: 
         copy = False
         lines= infile.readlines()
     # print(lines)
