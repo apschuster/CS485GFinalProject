@@ -22,12 +22,12 @@ def database_Creation(databaseIn,databaseOut):
     return databaseOut
 
 
-def main(argv):
+def main():
     database= 'UroBrizUbJA92_genome.fasta'
 
     #If user decides to make new database. argv[2]= .fasta file to turn into databse, argv[3]= name of the database
-    if(len(argv)==4):
-        database= database_Creation(argv[2],argv[3])
+    if(len(sys.argv)==4):
+        database= database_Creation(sys.argv[2],sys.argv[3])
 
     string_temp= ''
     contigList= []
