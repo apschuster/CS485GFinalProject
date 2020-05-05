@@ -13,11 +13,22 @@ class my_dictionary(dict):
     def add(self, key, value): 
         self[key] = value 
 
+#Create database based off chosen .fasta file
+def database_Creation(databaseIn,databaseOut):
+    cmd= 'cp '+ databaseIn + ' ~/ncbi-blast-2.10.0+/db/'
+    os.system(cmd)
+    cmd= 'makeblastdb -in  '+ databaseIn +' -dbtype nucl -out ~/ncbi-blast-2.10.0+/db/'+databaseOut
+    os.system(cmd)
+    return databaseOut
 
 
+def main(argv):
+    database= 'UroBrizUbJA92_genome.fasta'
 
-def main():
-        #Code will go here
+    #If user decides to make new database. argv[2]= .fasta file to turn into databse, argv[3]= name of the database
+    if(len(argv)==4):
+        database= database_Creation(argv[2],argv[3])
+
     string_temp= ''
     contigList= []
 
@@ -78,7 +89,7 @@ def main():
 
 
     # Generate the blast results, want output format 6 because it's cleaner
-    cmd= 'blastn -db UroBrizUbJA92_genome.fasta -query '+ tel_subTel_sequence +' -out UbJA92.genome_BLASTn6 -outfmt 6'
+    cmd= 'blastn -db ' + database + ' -query ' + tel_subTel_sequence + ' -out UbJA92.genome_BLASTn6 -outfmt 6'
     os.system(cmd)
 
     # Output the relevant results to a file. $1= query contig, $2= subject contig (blast db)
@@ -115,15 +126,9 @@ def main():
             elif( (subjectStart > (subjectContigLength-1500) and subjectEnd>subjectStart) or (subjectStart<1500 and subjectEnd>subjectStart) ):
                 telCount+=1
 
-
-
-
-        
     print("SubTelCount:", subTelCount)
     print("Tel Count: ",telCount)
     print("Initial Match Count: ",initialMatchCount)
-
-    
     
 if __name__ == "__main__":
     main()
