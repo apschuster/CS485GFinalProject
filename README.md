@@ -35,7 +35,7 @@ End with an example of getting some data out of the system or using it for a lit
 
 ### Inputs/Outputs & How to Run Program
 
-* Inputs: `Contigs.fasta`, `subject.fasta` (What makes the blast database), `database.genomeBLAST6`
+* Inputs(user specified): `Contigs.fasta`, `subject.fasta` (What makes the blast database), `database.genomeBLAST6` (If no inputs specified, the program runs in a test mode and simulates tel/subtel sequences)
   - `Contigs.fasta`: This is the .fasta file that is produced from step 1 (Evans part). If not specified, the program uses the 'Urochloa-brizantha_UbJA92.fasta' by default. This can be any tel/subtel contig file under the condition that the tel contigs appear before the subtel contigs.
   
     Example of running:
@@ -48,8 +48,14 @@ End with an example of getting some data out of the system or using it for a lit
     ```
     python extract_sequences.py Contigs.fasta Subject.fasta
     ```
-  - `database.genomeBLAST6`: 
-* Outputs:
+  - `database.genomeBLAST6`: This input is what the user would like to call the database that is generated from the Subject.fasta. This field is not necessary, but reccomended for clarity of the database one is referring to.
+  
+    Example of running:
+    ```
+    python extract_sequences.py Contigs.fasta Subject.fasta database.genomeBLAST6
+    ```
+* Outputs: `out.genomeBLASTn6`
+  - `out.genomeBLASTn6`: This is the final output from the program. It is a culled blast output that only shows the matches for legit tel/subtel contig matches. The output is shown in blast output format 6.
 
 ## Bugs/Limitations
 

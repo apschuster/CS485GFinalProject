@@ -158,9 +158,10 @@ def main():
             initialMatchCount+=1
         
             
+    print("Initial Match Count: ",initialMatchCount)        
     print("SubTelCount:", subTelCount)
     print("Tel Count: ",telCount)
-    print("Initial Match Count: ",initialMatchCount)
+    
     
 if __name__ == "__main__":
     main()
