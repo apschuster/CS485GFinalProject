@@ -18,21 +18,41 @@ blastn setup on your system (need the directory ~/ncbi-blast-2.10.0+/db/ from th
 
 ### Installing
 
-A step by step series of examples that tell you how to get a development env running
+This setup assumes that you have blast setup on your machine in the same way we did through our blast lab in CS485G, spring 2020. This setup simply describes how to install python 3.x on your system. If you already have python 3, dont worry about this.
 
-Say what the step will be
-
-```
-Give the example
-```
-
-And repeat
+Check python version
 
 ```
-until finished
+python -V
+or
+python3 -V
 ```
 
-End with an example of getting some data out of the system or using it for a little demo
+If not python version 3 (or native python doesn't point to python 3) continue.
+
+Install python 3.6 (if python3 is not on machine) using the following commands.
+
+```
+wget https://www.python.org/ftp/python/3.6.3/Python-3.6.3.tar.xz
+tar xJf Python-3.6.3.tar.xz
+cd Python-3.6.3
+./configure
+make
+make install
+```
+
+Afterwards, change native python to point to python3 by editing .bashrc file. Go to home directory and edit .bashrc with following command.
+
+```
+cd ~/
+vim .bashrc
+```
+
+Add the following line at any point in the file (make sure that a similar line does not already exist, if it does, modify to the one shown below)
+
+```
+alias python='/usr/bin/python3.6'
+```
 
 ### Inputs/Outputs & How to Run Program
 
@@ -65,7 +85,7 @@ End with an example of getting some data out of the system or using it for a lit
 * [blastn](https://ftp.ncbi.nlm.nih.gov/blast/executables/blast+/LATEST/) - The blast source used
 * [Python3](https://www.python.org/downloads/release/python-360/) -The version of python used.
 
-## Authors
+## Author
 
 * **Alex Schuster**  - [apschuster](https://github.com/apschuster)
 
