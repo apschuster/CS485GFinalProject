@@ -62,6 +62,7 @@ End with an example of getting some data out of the system or using it for a lit
 ## Built With
 
 * [blastn](https://ftp.ncbi.nlm.nih.gov/blast/executables/blast+/LATEST/) - The blast source used
+* [Python3](https://www.python.org/downloads/release/python-360/) -The version of python used.
 
 ## Authors
 
