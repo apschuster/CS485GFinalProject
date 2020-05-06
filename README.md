@@ -1,6 +1,6 @@
 # BLAST Postprocessor
 
-This program, 'extract_sequences.py', will validate tel/subtel contigs by culling the results that dont align properly or are in incorrect orientations. This takes the blast output (format 6) generated from the user specified database and tel/subtel contig file blasted against it, and removes innacurate results.
+This program, `extract_sequences.py`, will validate tel/subtel contigs by culling the results that dont align properly or are in incorrect orientations. This takes the blast output (format 6) generated from the user specified database and tel/subtel contig file blasted against it, and removes innacurate results.
 
 ## Getting Started
 
