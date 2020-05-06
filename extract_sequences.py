@@ -23,19 +23,26 @@ def database_Creation(databaseIn,databaseOut):
     os.system(cmd)
     cmd= 'makeblastdb -in  '+ databaseIn +' -dbtype nucl -out ~/ncbi-blast-2.10.0+/db/'+databaseOut
     os.system(cmd)
-    return databaseOut
 
 
 def main():
     database= 'UroBrizUbJA92_genome.fasta'
     genome= 'Urochloa-brizantha_UbJA92.fasta'
+    tel_subTel_sequence= 'extracted_sequences.fasta'
 
     #If user decides to make new database. argv[2]= .fasta file to turn into databse, argv[3]= name of the database
+    #This is also the logic that checks for what inputs (if any) the user enters 
     if(len(sys.argv)==4):
-        database= database_Creation(sys.argv[2],sys.argv[3])
+        database_Creation(sys.argv[2],sys.argv[3])
+        database= sys.argv[3]
         genome= sys.argv[2]
+        tel_subTel_sequence = sys.argv[1]
     elif(len(sys.argv)==3):
+        database_Creation(sys.argv[2],database)
         genome= sys.argv[2]
+        tel_subTel_sequence = sys.argv[1]
+    elif(len(sys.argv)==2):
+        tel_subTel_sequence= sys.argv[1]
 
     string_temp= ''
     contigList= []
@@ -91,10 +98,7 @@ def main():
             writer.write(contig[(len(contig)-extractAmount):len(contig)])  #Extracting the last 4th of each contig to then blast against
                                                                         #the genome for testing purposes.
 
-    tel_subTel_sequence= 'extracted_sequences.fasta'
-
-    if(len(sys.argv)==2):
-        tel_subTel_sequence = sys.argv[1]
+   
 
 
     # #Generate the blast results, want output format 6 because it's cleaner
