@@ -33,7 +33,10 @@ until finished
 
 End with an example of getting some data out of the system or using it for a little demo
 
-### Inputs/Outputs
+### Inputs/Outputs & How to Run Program
+
+* Inputs:
+* Outputs:
 
 ## Bugs/Limitations
 
