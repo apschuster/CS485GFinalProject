@@ -103,12 +103,12 @@ def main():
 
     # #Generate the blast results, want output format 6 because it's cleaner
     cmd= 'blastn -db ' + database + ' -query ' + tel_subTel_sequence + ' -out UbJA92.genome_BLASTn6 -outfmt 6'
-    # os.system(cmd)
+    os.system(cmd)
 
     # #Output the relevant results to a file. $1= query contig, $2= subject contig (blast db)
     # $3= percentage match, $9= start match loc on subject, $10=end match loc on subject
     cmd= 'awk -F \' \' \'{print $1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12}\' UbJA92.genome_BLASTn6 > parsed_blast.txt'
-    # os.system(cmd)
+    os.system(cmd)
 
     initialMatchCount=0
     telCount=0
