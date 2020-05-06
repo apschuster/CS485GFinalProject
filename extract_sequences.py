@@ -114,7 +114,7 @@ def main():
     telCount=0
     subTelCount=0
 
-    with open('UbJA92.genome_BLASTn6', 'rt') as reader, open('out.genomeBLASTn6','w') as out:
+    with open('parsed_blast.txt', 'rt') as reader, open('out.genomeBLASTn6','w') as out:
         linesP= reader.readlines()
         direction=''
         #This is dependent on the tel/subtelcontig file being blasted against it having the
