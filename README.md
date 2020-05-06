@@ -4,13 +4,14 @@ This program, 'extract_sequences.py', will validate tel/subtel contigs by cullin
 
 ## Getting Started
 
-These instructions will go over the nuances of the program such as whats necessary to set it up, required packages, and how to use it.
+These instructions will go over the nuances of the program such as whats necessary to set it up, required packages, inputs/outputs, and how to use it.
 
 ### Prerequisites
 
 Required packages/software
 
 ```
+Linux/Unix environment is required to run this properly
 python 3.0 or newer (3.6 in my case)
 blastn setup on your system (need the directory ~/ncbi-blast-2.10.0+/db/ from the blast lab)
 ```

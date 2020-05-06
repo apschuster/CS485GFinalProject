@@ -102,19 +102,19 @@ def main():
 
 
     # #Generate the blast results, want output format 6 because it's cleaner
-    # cmd= 'blastn -db ' + database + ' -query ' + tel_subTel_sequence + ' -out UbJA92.genome_BLASTn6 -outfmt 6'
+     cmd= 'blastn -db ' + database + ' -query ' + tel_subTel_sequence + ' -out UbJA92.genome_BLASTn6 -outfmt 6'
     # os.system(cmd)
 
     # #Output the relevant results to a file. $1= query contig, $2= subject contig (blast db)
     # $3= percentage match, $9= start match loc on subject, $10=end match loc on subject
-    # cmd= 'awk -F \' \' \'{print $1, $2, $3, $9, $10}\' UbJA92.genome_BLASTn6 > parsed_blast.txt'
+     cmd= 'awk -F \' \' \'{print $1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12}\' UbJA92.genome_BLASTn6 > parsed_blast.txt'
     # os.system(cmd)
 
     initialMatchCount=0
     telCount=0
     subTelCount=0
 
-    with open('parsed_blast.txt', 'rt') as reader, open('out.genomeBLASTn6','w') as out:
+    with open('UbJA92.genome_BLASTn6', 'rt') as reader, open('out.genomeBLASTn6','w') as out:
         linesP= reader.readlines()
         direction=''
         #This is dependent on the tel/subtelcontig file being blasted against it having the
@@ -126,8 +126,8 @@ def main():
             query= parameterList[0]
             subject= parameterList[1]
             matchpercent= float(parameterList[2])
-            subjectStart= int(parameterList[3])
-            subjectEnd= int(parameterList[4])
+            subjectStart= int(parameterList[8])
+            subjectEnd= int(parameterList[9])
             subjectContigLength=contigInfo.get(subject)  #retrieve length of subject contig in database, important for knowing if matches appear near ends
 
             #Tel Contig found, in forward direction at start of contig
