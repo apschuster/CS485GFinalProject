@@ -13,7 +13,7 @@ class my_dictionary(dict):
     def add(self, key, value): 
         self[key] = value 
 
-#Create database based off chosen .fasta file
+#Create database based off chosen .fasta file, and also chosen output database name
 def database_Creation(databaseIn,databaseOut):
     cmd= 'cp '+ databaseIn + ' ~/ncbi-blast-2.10.0+/db/'
     os.system(cmd)
