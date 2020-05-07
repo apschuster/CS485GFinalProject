@@ -102,17 +102,19 @@ def main():
 
 
     # #Generate the blast results, want output format 6 because it's cleaner
-    cmd= 'blastn -db ' + database + ' -query ' + tel_subTel_sequence + ' -out UbJA92.genome_BLASTn6 -outfmt 6'
-    os.system(cmd)
+    # cmd= 'blastn -db ' + database + ' -query ' + tel_subTel_sequence + ' -out UbJA92.genome_BLASTn6 -outfmt 6'
+    # os.system(cmd)
 
-    # #Output the relevant results to a file. $1= query contig, $2= subject contig (blast db)
-    # $3= percentage match, $9= start match loc on subject, $10=end match loc on subject
-    cmd= 'awk -F \' \' \'{print $1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12}\' UbJA92.genome_BLASTn6 > parsed_blast.txt'
-    os.system(cmd)
+    # # #Output the relevant results to a file. $1= query contig, $2= subject contig (blast db)
+    # # $3= percentage match, $9= start match loc on subject, $10=end match loc on subject
+    # cmd= 'awk -F \' \' \'{print $1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12}\' UbJA92.genome_BLASTn6 > parsed_blast.txt'
+    # os.system(cmd)
 
     initialMatchCount=0
     telCount=0
     subTelCount=0
+    forwardContig=''
+    reverseContig=''
 
     with open('parsed_blast.txt', 'rt') as reader, open('out.genomeBLASTn6','w') as out:
         linesP= reader.readlines()
@@ -132,14 +134,14 @@ def main():
 
             #Tel Contig found, in forward direction at start of contig
             #Assumes tel contig comes before subtel
-            if(subjectStart==1 and subjectEnd>subjectStart):
+            if(subjectStart==1 and subjectEnd>subjectStart and forwardContig!=subject):
                 direction='forward'
                 forwardContig=subject
                 out.write(linesP[i])
                 telCount+=1
             #Tel Contig found, in reverse direction at end of contig. 
             #Assumes tel contig comes before subtel    
-            elif(subjectStart==subjectContigLength and subjectEnd<subjectStart):
+            elif(subjectStart==subjectContigLength and subjectEnd<subjectStart and reverseContig!=subject):
                 direction='reverse'
                 reverseContig=subject
                 out.write(linesP[i])  #Writing valid results to new file
