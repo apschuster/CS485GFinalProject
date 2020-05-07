@@ -101,14 +101,15 @@ def main():
    
 
 
-    # #Generate the blast results, want output format 6 because it's cleaner
-    # cmd= 'blastn -db ' + database + ' -query ' + tel_subTel_sequence + ' -out UbJA92.genome_BLASTn6 -outfmt 6'
-    # os.system(cmd)
+    #Generate the blast results, want output format 6 because it's cleaner
+    cmd= 'blastn -db ' + database + ' -query ' + tel_subTel_sequence + ' -out UbJA92.genome_original_BLASTn6 -outfmt 6'
+    os.system(cmd)
 
-    # # #Output the relevant results to a file. $1= query contig, $2= subject contig (blast db)
-    # # $3= percentage match, $9= start match loc on subject, $10=end match loc on subject
-    # cmd= 'awk -F \' \' \'{print $1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12}\' UbJA92.genome_BLASTn6 > parsed_blast.txt'
-    # os.system(cmd)
+    # #Output the relevant results to a file. $1= query contig, $2= subject contig (blast db)
+    # $3= percentage match, $9= start match loc on subject, $10=end match loc on subject
+    cmd= 'awk -F \' \' \'{print $1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12}\' UbJA92.genome_original_BLASTn6 > parsed_blast.txt'
+    os.system(cmd)
+    
 
     initialMatchCount=0
     telCount=0
@@ -116,7 +117,7 @@ def main():
     forwardContig=''
     reverseContig=''
 
-    with open('parsed_blast.txt', 'rt') as reader, open('out.genomeBLASTn6','w') as out:
+    with open('parsed_blast.txt', 'rt') as reader, open('out.genome_culled_BLASTn6','w') as out:
         linesP= reader.readlines()
         direction=''
         #This is dependent on the tel/subtelcontig file being blasted against it having the
@@ -159,7 +160,8 @@ def main():
 
             initialMatchCount+=1
         
-            
+    cmd= 'rm -r parsed_blast.txt'
+    os.system(cmd)
     print("Initial Match Count: ",initialMatchCount)        
     print("SubTelCount:", subTelCount)
     print("Tel Count: ",telCount)
