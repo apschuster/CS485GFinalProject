@@ -51,7 +51,6 @@ def main():
     with open(genome, 'rt') as infile: 
         copy = False
         lines= infile.readlines()
-    # print(lines)
 
         for i in range(0, len(lines)):
             line= lines[i]
@@ -165,6 +164,7 @@ def main():
     print("Initial Match Count: ",initialMatchCount)        
     print("SubTelCount:", subTelCount)
     print("Tel Count: ",telCount)
+    print("Your culled blast result, \"out.genome_culled_BLASTn6\", has been created...",)
     
     
 if __name__ == "__main__":
