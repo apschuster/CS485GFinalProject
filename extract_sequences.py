@@ -1,3 +1,7 @@
+#Alex Schuster
+#CS485G
+#Blast PostProcessor (Check README.md)
+
 import re
 import os
 import sys
@@ -19,19 +23,26 @@ def database_Creation(databaseIn,databaseOut):
     os.system(cmd)
     cmd= 'makeblastdb -in  '+ databaseIn +' -dbtype nucl -out ~/ncbi-blast-2.10.0+/db/'+databaseOut
     os.system(cmd)
-    return databaseOut
 
 
 def main():
     database= 'UroBrizUbJA92_genome.fasta'
     genome= 'Urochloa-brizantha_UbJA92.fasta'
+    tel_subTel_sequence= 'extracted_sequences.fasta'
 
     #If user decides to make new database. argv[2]= .fasta file to turn into databse, argv[3]= name of the database
+    #This is also the logic that checks for what inputs (if any) the user enters 
     if(len(sys.argv)==4):
-        database= database_Creation(sys.argv[2],sys.argv[3])
+        database_Creation(sys.argv[2],sys.argv[3])
+        database= sys.argv[3]
         genome= sys.argv[2]
+        tel_subTel_sequence = sys.argv[1]
     elif(len(sys.argv)==3):
+        database_Creation(sys.argv[2],database)
         genome= sys.argv[2]
+        tel_subTel_sequence = sys.argv[1]
+    elif(len(sys.argv)==2):
+        tel_subTel_sequence= sys.argv[1]
 
     string_temp= ''
     contigList= []
@@ -87,28 +98,29 @@ def main():
             writer.write(contig[(len(contig)-extractAmount):len(contig)])  #Extracting the last 4th of each contig to then blast against
                                                                         #the genome for testing purposes.
 
-    tel_subTel_sequence= 'extracted_sequences.fasta'
-
-    if(len(sys.argv)==2):
-        tel_subTel_sequence = sys.argv[1]
+   
 
 
-    # Generate the blast results, want output format 6 because it's cleaner
-    cmd= 'blastn -db ' + database + ' -query ' + tel_subTel_sequence + ' -out UbJA92.genome_BLASTn6 -outfmt 6'
-    os.system(cmd)
+    # #Generate the blast results, want output format 6 because it's cleaner
+    # cmd= 'blastn -db ' + database + ' -query ' + tel_subTel_sequence + ' -out UbJA92.genome_BLASTn6 -outfmt 6'
+    # os.system(cmd)
 
-    # Output the relevant results to a file. $1= query contig, $2= subject contig (blast db)
-    # $3= percentage match, $9= start match loc on subject, $10=end match loc on subject
-    cmd= 'awk -F \' \' \'{print $1, $2, $3, $9, $10}\' UbJA92.genome_BLASTn6 > parsed_blast.txt'
-    os.system(cmd)
+    # # #Output the relevant results to a file. $1= query contig, $2= subject contig (blast db)
+    # # $3= percentage match, $9= start match loc on subject, $10=end match loc on subject
+    # cmd= 'awk -F \' \' \'{print $1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12}\' UbJA92.genome_BLASTn6 > parsed_blast.txt'
+    # os.system(cmd)
 
     initialMatchCount=0
     telCount=0
     subTelCount=0
+    forwardContig=''
+    reverseContig=''
 
-    with open('parsed_blast.txt', 'rt') as reader:
+    with open('parsed_blast.txt', 'rt') as reader, open('out.genomeBLASTn6','w') as out:
         linesP= reader.readlines()
-
+        direction=''
+        #This is dependent on the tel/subtelcontig file being blasted against it having the
+        #tel contigs shown before the subtelcontigs
         for i in range(0, len(linesP)):
             line=linesP[i].rstrip()
             parameterList= line.split(' ')
@@ -116,24 +128,42 @@ def main():
             query= parameterList[0]
             subject= parameterList[1]
             matchpercent= float(parameterList[2])
-            subjectStart= int(parameterList[3])
-            subjectEnd= int(parameterList[4])
+            subjectStart= int(parameterList[8])
+            subjectEnd= int(parameterList[9])
             subjectContigLength=contigInfo.get(subject)  #retrieve length of subject contig in database, important for knowing if matches appear near ends
 
-            verfiedTelContigs=''
-            verifiedSubTelContigs=''
+            #Tel Contig found, in forward direction at start of contig
+            #Assumes tel contig comes before subtel
+            if(subjectStart==1 and subjectEnd>subjectStart and forwardContig!=subject):
+                direction='forward'
+                forwardContig=subject #Essentially a flag to track which tel contig we are on
+                out.write(linesP[i]) #Writing valid results to new file
+                telCount+=1
+            #Tel Contig found, in reverse direction at end of contig. 
+            #Assumes tel contig comes before subtel    
+            elif(subjectStart==subjectContigLength and subjectEnd<subjectStart and reverseContig!=subject):
+                direction='reverse'
+                reverseContig=subject #Essentially a flag to track which tel contig we are on
+                out.write(linesP[i])  #Writing valid results to new file
+                telCount+=1
+            #Search for subtel contig on first end of contig, in reverse direction (reverse of tel contig)
+            elif(direction=='forward' and subjectStart<1500 and subjectEnd<subjectStart and matchpercent==100.000 and subject==forwardContig):
+                direction='' #Reset previous tel contig match since correponding subtelcontig has been found
+                out.write(linesP[i]) #Writing valid results to new file
+                subTelCount+=1
+            #Search for subtel contig on 2nd end of contig, in forward direction (reverse of tel contig)
+            elif(direction=='reverse' and subjectStart > (subjectContigLength-1500) and subjectEnd>subjectStart and matchpercent==100.000 and subject==reverseContig):
+                direction=''  #Reset previous tel contig match since correponding subtelcontig has been found
+                out.write(linesP[i]) #Writing valid results to new file
+                subTelCount+=1
 
             initialMatchCount+=1
-            #Matching for subtel contigs, need 100% match and in opposite orientation. Matches need to be within 1500 bases to ends
-            if( (subjectStart > (subjectContigLength-1500) and subjectEnd<subjectStart and matchpercent==100.000) or (subjectStart<1500 and subjectEnd<subjectStart and matchpercent==100.000) ):
-                #subtel contig, need 100% match
-                subTelCount+=1
-            elif( (subjectStart > (subjectContigLength-1500) and subjectEnd>subjectStart) or (subjectStart<1500 and subjectEnd>subjectStart) ):
-                telCount+=1
-
+        
+            
+    print("Initial Match Count: ",initialMatchCount)        
     print("SubTelCount:", subTelCount)
     print("Tel Count: ",telCount)
-    print("Initial Match Count: ",initialMatchCount)
+    
     
 if __name__ == "__main__":
     main()
