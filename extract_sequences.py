@@ -136,25 +136,25 @@ def main():
             #Assumes tel contig comes before subtel
             if(subjectStart==1 and subjectEnd>subjectStart and forwardContig!=subject):
                 direction='forward'
-                forwardContig=subject
-                out.write(linesP[i])
+                forwardContig=subject #Essentially a flag to track which tel contig we are on
+                out.write(linesP[i]) #Writing valid results to new file
                 telCount+=1
             #Tel Contig found, in reverse direction at end of contig. 
             #Assumes tel contig comes before subtel    
             elif(subjectStart==subjectContigLength and subjectEnd<subjectStart and reverseContig!=subject):
                 direction='reverse'
-                reverseContig=subject
+                reverseContig=subject #Essentially a flag to track which tel contig we are on
                 out.write(linesP[i])  #Writing valid results to new file
                 telCount+=1
             #Search for subtel contig on first end of contig, in reverse direction (reverse of tel contig)
             elif(direction=='forward' and subjectStart<1500 and subjectEnd<subjectStart and matchpercent==100.000 and subject==forwardContig):
                 direction='' #Reset previous tel contig match since correponding subtelcontig has been found
-                out.write(linesP[i])
+                out.write(linesP[i]) #Writing valid results to new file
                 subTelCount+=1
             #Search for subtel contig on 2nd end of contig, in forward direction (reverse of tel contig)
             elif(direction=='reverse' and subjectStart > (subjectContigLength-1500) and subjectEnd>subjectStart and matchpercent==100.000 and subject==reverseContig):
                 direction=''  #Reset previous tel contig match since correponding subtelcontig has been found
-                out.write(linesP[i])
+                out.write(linesP[i]) #Writing valid results to new file
                 subTelCount+=1
 
             initialMatchCount+=1
