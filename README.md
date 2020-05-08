@@ -1,6 +1,6 @@
 # BLAST Postprocessor
 
-This program, `extract_sequences.py`, will validate tel/subtel contigs by culling the results that dont align properly or are in incorrect orientations. This takes the blast output (format 6) generated from the user specified database and tel/subtel contig file blasted against it, and removes innacurate results.
+This program, `Blast_PostProcessor.py`, will validate tel/subtel contigs by culling the results that dont align properly or are in incorrect orientations. This takes the blast output (format 6) generated from the user specified database and tel/subtel contig file blasted against it, and removes innacurate results.
 
 ## Getting Started
 
@@ -61,19 +61,19 @@ alias python='/usr/bin/python3.6'
   
     Example of running:
     ```
-    python extract_sequences.py Contigs.fasta
+    python Blast_Postprocessor.py Contigs.fasta
     ```
   - `Subject.fasta`: This is the .fasta file that one wishes to use as a database for the Contigs.fasta to be blasted against. If the argument is specified, a database will be created out of this .fasta file. If no other argument is mentioned after this, the database will be named 'UroBrizUbJA92_genome.fasta' by default. Also, the new database will be located in the ~/ncbi-blast-2.10.0+/db/ directory.
     
     Example of running:
     ```
-    python extract_sequences.py Contigs.fasta Subject.fasta
+    python Blast_Postprocessor.py Contigs.fasta Subject.fasta
     ```
   - `database.genomeBLAST6`: This input is what the user would like to call the database that is generated from the Subject.fasta. This field is not necessary, but reccomended for clarity of the database one is referring to.
   
     Example of running:
     ```
-    python extract_sequences.py Contigs.fasta Subject.fasta database.genomeBLAST6
+    python Blast_Postprocessor.py Contigs.fasta Subject.fasta database.genomeBLAST6
     ```
 * Outputs: `out.genome_culled_BLASTn6`, `UbJA92.genome_original_BLASTn6`
   - `out.genome_culled_BLASTn6`: This is the final output from the program. It is a culled blast output that only shows the matches for legit tel/subtel contig matches. The output is shown in blast output format 6.
