@@ -28,7 +28,7 @@ def database_Creation(databaseIn,databaseOut):
 def main():
     database= 'UroBrizUbJA92_genome.fasta'
     genome= 'Urochloa-brizantha_UbJA92.fasta'
-    tel_subTel_sequence= 'extracted_sequences.fasta'
+    tel_subTel_sequence= 'dummy_sequences.fasta'
 
     #If user decides to make new database. argv[2]= .fasta file to turn into databse, argv[3]= name of the database
     #This is also the logic that checks for what inputs (if any) the user enters 
@@ -79,7 +79,7 @@ def main():
 
 
     contigInfo= my_dictionary()
-    with open('extracted_sequences.fasta', 'w') as writer:
+    with open('dummy_sequences.fasta', 'w') as writer:
         for contig in contigList:
             firstLine= re.search('^>Urochloa.+', contig)
             
@@ -97,7 +97,7 @@ def main():
             writer.write(contig[(len(contig)-extractAmount):len(contig)])  #Extracting the last 4th of each contig to then blast against
                                                                         #the genome for testing purposes.
     if(len(sys.argv)>=2):
-        cmd= 'extracted_sequences.fasta'
+        cmd= 'dummy_sequences.fasta'
         os.system(cmd)
 
    
