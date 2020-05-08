@@ -2,6 +2,8 @@
 
 This program, `Blast_PostProcessor.py`, will validate tel/subtel contigs by culling the results that dont align properly or are in incorrect orientations. This takes the blast output (format 6) generated from the user specified database and tel/subtel contig file blasted against it, and removes innacurate results.
 
+* Link to GitHub: `https://github.com/apschuster/CS485GFinalProject`
+  
 ## Getting Started
 
 These instructions will go over the nuances of the program such as whats necessary to set it up, required packages, inputs/outputs, and how to use it.
