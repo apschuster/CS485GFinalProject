@@ -96,6 +96,9 @@ def main():
             writer.write('\n')
             writer.write(contig[(len(contig)-extractAmount):len(contig)])  #Extracting the last 4th of each contig to then blast against
                                                                         #the genome for testing purposes.
+    if(len(sys.argv)>=2):
+        cmd= 'extracted_sequences.fasta'
+        os.system(cmd)
 
    
 

@@ -56,7 +56,7 @@ alias python='/usr/bin/python3.6'
 
 ### Inputs/Outputs & How to Run Program
 
-* Inputs(user specified): `Contigs.fasta`, `subject.fasta` (What makes the blast database), `database.genomeBLAST6` (If no inputs specified, the program runs in a test mode and simulates tel/subtel sequences)
+* Inputs(user specified, not actual names): `Contigs.fasta`, `subject.fasta` (What makes the blast database), `database.genomeBLAST6` (If no inputs specified, the program runs in a test mode and simulates tel/subtel sequences)
   - `Contigs.fasta`: This is the .fasta file that is produced from step 1 (Evans part). If not specified, the program uses the 'Urochloa-brizantha_UbJA92.fasta' by default. This can be any tel/subtel contig file under the condition that the tel contigs appear before the subtel contigs.
   
     Example of running:
@@ -75,10 +75,16 @@ alias python='/usr/bin/python3.6'
     ```
     python extract_sequences.py Contigs.fasta Subject.fasta database.genomeBLAST6
     ```
-* Outputs: `out.genomeBLASTn6`
-  - `out.genomeBLASTn6`: This is the final output from the program. It is a culled blast output that only shows the matches for legit tel/subtel contig matches. The output is shown in blast output format 6.
+* Outputs: `out.genome_culled_BLASTn6`, `UbJA92.genome_original_BLASTn6`
+  - `out.genome_culled_BLASTn6`: This is the final output from the program. It is a culled blast output that only shows the matches for legit tel/subtel contig matches. The output is shown in blast output format 6.
+  - `UbJA92.genome_original_BLASTn6`: This is the original blast result (format 6), before the program culls down the illegitimate results. This is for reference for the user of what was changed.
 
-## Bugs/Limitations
+* The inputs above are optional to the program in respect to it compiling. They are needed if you have valid tel/subtel contig .fasta files and a relevant database you want said contig files to be blasted against. Otherwise, the program generates dummy query data to work with. The logic of the program is pretty straightforward and heavily commented. If you want to make changes to the way the tel/subtel contigs are culled, pay attention to lines 122-163. Most of the other logic in the program is extracting the information needed to that point, and generating the files needed (such as the blast database) through system commands.
+
+## Bugs/Limitations/Future Works
+* At the moment, the program expects the tel contigs to appear before the subtel contigs. Otherwise, the subtel contig conditional wont know what orientation to look in. This can be fixed with more complicated logic, or have to worked around through how one chooses to organize the input query file.
+* The program does not have a help menu. If I had more time, this would be something that I would have liked to add due to how command line focused this program is.
+* There is still a lot of capability that can probably be leveraged with this program. It organizes the genome into a list of strings (based on contigs), and also has the blast format placed into a list of parameters. Depending on what information one would want to extract, all of the necessary tools are there. It also saves the length of each subject contig into a dictionary, with the key values being the contig name for easy lookup (line 92).
 
 ## Built With
 
